@@ -1,0 +1,8 @@
+services:
+  mongodb:
+    image: postgres
+    container_name: postgresDb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123
