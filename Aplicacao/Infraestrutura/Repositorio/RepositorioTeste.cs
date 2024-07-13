@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infraestrutura.Repositorio
 {
-    public class RepositorioUsuarios : RepositorioGenerico<Usuarios>, IRepositorioUsuarios
+    public class RepositorioTeste: RepositorioGenerico<Teste>, IRepositorioTeste
     {
         private readonly DbContextOptions<Contexto> _optionsBuilder;
 
-        public RepositorioUsuarios(DbContextOptions<Contexto> optionsBuilder) : base(optionsBuilder)
+        public RepositorioTeste(DbContextOptions<Contexto> optionsBuilder) : base(optionsBuilder)
         {
             _optionsBuilder = optionsBuilder;
         }

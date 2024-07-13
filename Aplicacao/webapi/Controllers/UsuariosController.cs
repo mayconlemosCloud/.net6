@@ -1,6 +1,6 @@
-﻿using Dominio.Interfaces;
-using Entidades.Entidades;
-using Infraestrutura.Configuracao;
+﻿using Aplicacao.DTO.Request;
+using Aplicacao.Interfaces.Servicos;
+using Dominio.Entidades;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webapi.Controllers
@@ -9,34 +9,25 @@ namespace webapi.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
+        private readonly IServicosUsuarios _servicosUsuarios;
 
-        private readonly InterfaceUsuarios _interfaceUsuarios;
-
-        public UsuariosController(InterfaceUsuarios interfaceUsuarios)
+        public UsuariosController(IServicosUsuarios servicosUsuarios)
         {
-            _interfaceUsuarios = interfaceUsuarios;
+            _servicosUsuarios = servicosUsuarios;
         }
 
-   
-        [HttpPost]
-        public async Task<ActionResult<Usuarios>> Adicionar(Usuarios usuario)
+        [Produces("application/json")]
+        [HttpPost("/api/AdicionaUsuario")]
+        public async Task<ActionResult> Adicionar([FromBody] UsuariosRequest usuariosRequest)
         {
-           await _interfaceUsuarios.Adicionar(usuario);
-           return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Usuarios>> Deletar(string id)
-        {
-            var usuario = await _interfaceUsuarios.BuscarPorId(id);
-
-            if(usuario == null)
+            var user = new Usuarios()
             {
-                return BadRequest();
-            }
-            await _interfaceUsuarios.Excluir(usuario);
-            return Ok();
-        }
+                Email = usuariosRequest.Email,
+                PasswordHash = usuariosRequest.PasswordHash,
+            };
 
+            await _servicosUsuarios.Adicionar(user);
+            return Ok("Criado");
+        }
     }
 }
